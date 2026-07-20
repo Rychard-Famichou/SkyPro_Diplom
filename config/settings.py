@@ -46,6 +46,8 @@ INSTALLED_APPS = [
     "corsheaders",
     "django_filters",
     "drf_yasg",
+    "djoser",
+    "users",
 ]
 
 MIDDLEWARE = [
@@ -141,7 +143,7 @@ REST_FRAMEWORK = {
 }
 
 SIMPLE_JWT = {
-    "ACCESS_TOKEN_LIFETIME": timedelta(days=1),  # minutes=15
+    "ACCESS_TOKEN_LIFETIME": timedelta(minutes=15),
     "REFRESH_TOKEN_LIFETIME": timedelta(days=1),
 }
 
@@ -157,3 +159,25 @@ CSRF_TRUSTED_ORIGINS = [
 
 CORS_ALLOW_ALL_ORIGINS = False
 CORS_ALLOW_CREDENTIALS = True
+
+AUTH_USER_MODEL = "users.CustomUser"
+
+EMAIL_BACKEND = "users.email_backend.ReadableConsoleEmailBackend"
+SITE_NAME = "SkyPro. Доска объявлений"
+DOMAIN = "localhost:3000"
+
+# Настройки Djoser
+DJOSER = {
+    "LOGIN_FIELD": "email",
+    "USER_CREATE_PASSWORD_RETYPE": True,
+    "PASSWORD_RESET_CONFIRM_URL": "password/reset/confirm/{uid}/{token}",
+    "SERIALIZERS": {
+        # Если нужно кастомизировать поля при регистрации/просмотре профиля,
+        # здесь можно будет указать свои сериализаторы.
+    },
+    "TOKEN_MODEL": None,
+}
+
+SWAGGER_SETTINGS = {
+    "DEFAULT_AUTO_SCHEMA_CLASS": "swagger_inspectors.DjoserCustomSchema",
+}
