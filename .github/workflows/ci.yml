@@ -89,6 +89,8 @@ jobs:
           DB_HOST: "127.0.0.1"
           DB_PORT: "5432"
         run: |
+          # Включаем строгий режим обработки ошибок в bash
+          set -e
           # Запускаем pytest с генерацией отчета покрытия в файл coverage.txt
           poetry run pytest -o addopts="" --cov=. --cov-report=term > coverage.txt
           # Выводим отчет в консоль CI, чтобы его было видно в логах коммита

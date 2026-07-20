@@ -95,7 +95,10 @@ disallow_untyped_defs = false
 disallow_incomplete_defs = false
 disallow_untyped_calls = false
 
-
+[tool.coverage.report]
+skip_empty = true
+show_missing = true
+fail_under = 80
 [tool.coverage.run]
 omit = [
     "manage.py",
