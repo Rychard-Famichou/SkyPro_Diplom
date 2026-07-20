@@ -98,14 +98,13 @@ disallow_untyped_calls = false
 [tool.coverage.run]
 omit = [
     "manage.py",
-    "*/migrations/*",
-    "*/asgi.py",
-    "*/wsgi.py",
-    "*/settings.py",
-    "*/settings/*",
-    "*/tests/*",
-    "venv/*",
-    ".venv/*",
+    "**/migrations/**",
+    "**/asgi.py",
+    "**/wsgi.py",
+    "**/settings.py",
+    "**/swagger_inspectors.py",
+    "**/db_init.py",
+    "**/email_backend.py",
 ]
 [tool.coverage.report]
 exclude_lines = [

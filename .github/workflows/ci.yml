@@ -92,7 +92,8 @@ jobs:
           # Включаем строгий режим обработки ошибок в bash
           set -e
           # Запускаем pytest с генерацией отчета покрытия в файл coverage.txt
-          poetry run pytest -o addopts="" --cov=. --cov-report=term > coverage.txt
+          poetry run pytest -o addopts="" --cov=. --cov-report=term | tee coverage.txt
+          exit ${PIPESTATUS[0]}
           # Выводим отчет в консоль CI, чтобы его было видно в логах коммита
           cat coverage.txt
 
