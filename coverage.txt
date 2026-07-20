@@ -17,22 +17,17 @@ users/tests.py .............                                             [100%]
 ================================ tests coverage ================================
 _______________ coverage: platform linux, python 3.12.13-final-0 _______________
 
-Name                                    Stmts   Miss  Cover   Missing
----------------------------------------------------------------------
-config/__init__.py                          0      0   100%
-config/urls.py                              7      0   100%
-conftest.py                                13      0   100%
-swagger_inspectors.py                      19     19     0%   1-51
-users/__init__.py                           0      0   100%
-users/admin.py                             10      0   100%
-users/apps.py                               3      0   100%
-users/email_backend.py                     15     15     0%   1-30
-users/management/__init__.py                0      0   100%
-users/management/commands/__init__.py       0      0   100%
-users/management/commands/db_init.py       25     25     0%   1-38
-users/models.py                            62     19    69%   12, 16-17, 22, 24, 42-50, 79-85
-users/tests.py                             71      0   100%
-users/views.py                              0      0   100%
----------------------------------------------------------------------
-TOTAL                                     225     78    65%
-======================== 13 passed, 1 warning in 4.26s =========================
+Name              Stmts   Miss  Cover   Missing
+-----------------------------------------------
+config/urls.py        7      0   100%
+conftest.py          13      0   100%
+users/admin.py       10      0   100%
+users/apps.py         3      0   100%
+users/models.py      62     19    69%   12, 16-17, 22, 24, 42-50, 79-85
+users/tests.py       71      0   100%
+-----------------------------------------------
+TOTAL               166     19    89%
+
+5 empty files skipped.
+Required test coverage of 80.0% reached. Total coverage: 88.55%
+======================== 13 passed, 1 warning in 4.33s =========================
