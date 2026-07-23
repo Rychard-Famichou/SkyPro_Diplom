@@ -42,4 +42,4 @@ TOTAL                        408     18    96%
 
 7 empty files skipped.
 Required test coverage of 80.0% reached. Total coverage: 95.59%
-======================== 56 passed, 1 warning in 24.78s ========================
+======================== 56 passed, 1 warning in 17.81s ========================
