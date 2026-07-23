@@ -1,7 +1,7 @@
 import re
 
 from django.core.exceptions import ValidationError
-from django.urls import reverse
+from django.urls import reverse_lazy
 from rest_framework import status
 
 import pytest
@@ -13,7 +13,7 @@ def test_user_data():
     return {
         "first_name": "Test",
         "last_name": "Testov",
-        "phone": "+48600769182",
+        "phone": "+003",
         "email": "test@example.com",
         "password": "test.password",
         "re_password": "test.password",
@@ -22,7 +22,7 @@ def test_user_data():
 
 @pytest.mark.django_db
 class TestCreateUserAPI:
-    create_url = reverse("customuser-list")
+    create_url = reverse_lazy("customuser-list")
 
     def test_create_user_success(self, guest_api_client, test_user_data):
         response = guest_api_client.post(self.create_url, data=test_user_data, format="json")
@@ -60,48 +60,48 @@ class TestCreateUserAPI:
 
 @pytest.mark.django_db
 class TestRUDUserAPI:
-    me_url = reverse("customuser-me")
+    me_url = reverse_lazy("customuser-me")
 
-    def test_detail(self, test_user_auth_client):
-        response = test_user_auth_client.get(self.me_url)
+    def test_detail(self, user_auth_client):
+        response = user_auth_client.get(self.me_url)
         assert response.status_code == status.HTTP_200_OK
 
-    def test_patch(self, test_user_auth_client):
+    def test_patch(self, user_auth_client):
         patch_data = {
             "first_name": "Test2",
         }
-        response = test_user_auth_client.patch(self.me_url, data=patch_data, format="json")
+        response = user_auth_client.patch(self.me_url, data=patch_data, format="json")
         assert response.status_code == status.HTTP_200_OK
         assert response.data["first_name"] == "Test2"
 
-    def test_put(self, test_user_auth_client):
+    def test_put(self, user_auth_client):
         put_data = {"first_name": "Test3", "last_name": "Test4", "phone": "+007"}
-        response = test_user_auth_client.put(self.me_url, data=put_data, format="json")
+        response = user_auth_client.put(self.me_url, data=put_data, format="json")
         assert response.status_code == status.HTTP_200_OK
         assert response.data["first_name"] == "Test3"
         assert response.data["last_name"] == "Test4"
         assert response.data["phone"] == "+007"
 
-    def test_delete(self, test_user_auth_client):
+    def test_delete(self, user_auth_client):
         delete_data = {"current_password": "test.password"}
-        response = test_user_auth_client.delete(self.me_url, data=delete_data, format="json")
+        response = user_auth_client.delete(self.me_url, data=delete_data, format="json")
         assert response.status_code == status.HTTP_204_NO_CONTENT
         assert response.data is None
 
 
 @pytest.mark.django_db
 class TestResetPasswordAPI:
-    reset_url = reverse("customuser-reset-password")
-    reset_confirm_url = reverse("customuser-reset-password-confirm")
+    reset_url = reverse_lazy("customuser-reset-password")
+    reset_confirm_url = reverse_lazy("customuser-reset-password-confirm")
 
-    def test_reset_password(self, guest_api_client, test_user, mailoutbox):
-        email_data = {"email": test_user.email}
+    def test_reset_password(self, guest_api_client, simple_user, mailoutbox):
+        email_data = {"email": simple_user.email}
         response = guest_api_client.post(self.reset_url, data=email_data, format="json")
         assert response.status_code == status.HTTP_204_NO_CONTENT
 
         assert len(mailoutbox) == 1
         email = mailoutbox[0]
-        assert test_user.email in email.to
+        assert simple_user.email in email.to
         match = re.search(r"confirm/([^/]+)/([^/\s\n]+)", email.body)
         assert match is not None, "Не удалось найти uid и token в тексте письма"
         uid = match.group(1)
@@ -110,5 +110,5 @@ class TestResetPasswordAPI:
 
         confirm_response = guest_api_client.post(self.reset_confirm_url, data=confirm_payload)
         assert confirm_response.status_code == status.HTTP_204_NO_CONTENT
-        test_user.refresh_from_db()
-        assert test_user.check_password("new.test.password") is True
+        simple_user.refresh_from_db()
+        assert simple_user.check_password("new.test.password") is True
