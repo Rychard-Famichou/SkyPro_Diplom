@@ -6,6 +6,8 @@ from rest_framework import status
 
 import pytest
 
+from users.models import CustomUser
+
 
 # Create your tests here.
 @pytest.fixture
@@ -13,7 +15,7 @@ def test_user_data():
     return {
         "first_name": "Test",
         "last_name": "Testov",
-        "phone": "+003",
+        "phone": "+48600769182",
         "email": "test@example.com",
         "password": "test.password",
         "re_password": "test.password",
@@ -31,6 +33,16 @@ class TestCreateUserAPI:
         assert response.data["email"] == test_user_data["email"]
         assert response.data["first_name"] == test_user_data["first_name"]
         assert "password" not in response.data
+
+    def test_create_user_collision(self, guest_api_client, test_user_data, test_user_data2):
+        response1 = guest_api_client.post(self.create_url, data=test_user_data, format="json")
+        assert response1.status_code == status.HTTP_201_CREATED
+        pk1 = response1.data["id"]
+        assert CustomUser.objects.get(pk=pk1).username == "test-testov"
+        response2 = guest_api_client.post(self.create_url, data=test_user_data2, format="json")
+        assert response2.status_code == status.HTTP_201_CREATED
+        pk2 = response2.data["id"]
+        assert CustomUser.objects.get(pk=pk2).username == "test-testov-1"
 
     @pytest.mark.parametrize(
         "invalid_field, invalid_value, expected_exception",

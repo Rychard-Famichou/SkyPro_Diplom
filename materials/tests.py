@@ -9,6 +9,7 @@ from materials.models import Ad, Comment
 @pytest.mark.django_db
 class TestAdListApi:
     """Класс для тестирования списка Объявлений"""
+    ad_list_url = reverse_lazy("materials:ad-list")
 
     @pytest.mark.parametrize(
         "client_fixture_name, expected",
@@ -20,11 +21,26 @@ class TestAdListApi:
         ],
     )
     def test_list(self, request, client_fixture_name, expected):
-        ad_list_url = reverse_lazy("materials:ad-list")
+        """Тест: список объявлений доступен всем"""
+
         client = request.getfixturevalue(client_fixture_name)
-        response = client.get(ad_list_url)
+        response = client.get(self.ad_list_url)
         assert response.status_code == 200
         assert response.data["count"] == expected
+
+    def test_filter(self, user_auth_client, ad_data):
+        """Тест: фильтр списка"""
+        response = user_auth_client.get(self.ad_list_url, data={"title": "1"})
+        assert response.status_code == 200
+        assert response.data["count"] == 1
+        assert response.data["results"][0]["title"] == "Title 1"
+
+    def test_filter_empty(self, user_auth_client):
+        """Тест: фильтр списка"""
+        response = user_auth_client.get(self.ad_list_url, data={"title": "1"})
+        assert response.status_code == 200
+        assert response.data["count"] == 0
+        assert len(response.data["results"]) == 0
 
 
 @pytest.mark.django_db

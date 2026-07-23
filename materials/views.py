@@ -1,5 +1,7 @@
+from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework import generics, permissions
 
+from materials.filters import AdFilter
 from materials.models import Ad, Comment
 from materials.paginators import AdPaginator
 from materials.permissions import IsAdminRole, IsAuthor
@@ -12,12 +14,14 @@ class AdBaseAPIView(generics.GenericAPIView):
 
     queryset = Ad.objects.all()
     serializer_class = AdSerializer
+    filter_backends = [DjangoFilterBackend]
 
 
 class AdListAPIView(AdBaseAPIView, generics.ListAPIView):
     """Лист объявлений."""
 
     pagination_class = AdPaginator
+    filterset_class = AdFilter
     permission_classes = [permissions.AllowAny]
 
 
