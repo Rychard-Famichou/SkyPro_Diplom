@@ -60,7 +60,9 @@ class CustomUser(AbstractUser):
     last_name = models.CharField(max_length=50, verbose_name="Фамилия")
     phone = models.CharField(max_length=20, unique=True, verbose_name="Телефон")
     email = models.EmailField(max_length=50, unique=True, verbose_name="Почта")
-    role = models.CharField(choices=RoleChoices.choices, verbose_name="Роль пользователя")
+    role = models.CharField(
+        max_length=10, choices=RoleChoices.choices, default=RoleChoices.USER, verbose_name="Роль пользователя"
+    )
     image = models.ImageField(upload_to="avatars/%Y/%m", verbose_name="Аватарка")
 
     USERNAME_FIELD = "email"

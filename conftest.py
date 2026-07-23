@@ -12,15 +12,53 @@ def guest_api_client() -> APIClient:
 
 
 @pytest.fixture
-def test_user() -> CustomUser:
+def simple_user() -> CustomUser:
     """Фикстура для создания обычного пользователя"""
     return CustomUser.objects.create_user(
-        first_name="Test", last_name="Testov", phone="+48600769182", email="test@example.com", password="test.password"
+        first_name="Test", last_name="Testov", phone="+003", email="test@example.com", password="test.password"
     )
 
 
 @pytest.fixture
-def test_user_auth_client(guest_api_client, test_user) -> APIClient:
-    """Фикстура для авторизованного клиента DRF"""
-    guest_api_client.force_authenticate(user=test_user)
-    return guest_api_client
+def author_user() -> CustomUser:
+    """Фикстура для создания автора контента"""
+    return CustomUser.objects.create_user(
+        first_name="Author", last_name="Authorov", phone="+002", email="author@example.com", password="author.password"
+    )
+
+
+@pytest.fixture
+def admin_user() -> CustomUser:
+    """Фикстура для создания администратора"""
+    return CustomUser.objects.create_user(
+        first_name="Admin",
+        last_name="Adminov",
+        phone="+001",
+        email="admin@example.com",
+        password="admin.password",
+        role="ADMIN",
+    )
+
+
+@pytest.fixture
+def user_auth_client(simple_user) -> APIClient:
+    """Фикстура для авторизованного пользователя"""
+    client = APIClient()
+    client.force_authenticate(user=simple_user)
+    return client
+
+
+@pytest.fixture
+def author_auth_client(author_user) -> APIClient:
+    """Фикстура для авторизованного автора контента"""
+    client = APIClient()
+    client.force_authenticate(user=author_user)
+    return client
+
+
+@pytest.fixture
+def admin_auth_client(admin_user) -> APIClient:
+    """Фикстура для авторизованного администратора"""
+    client = APIClient()
+    client.force_authenticate(user=admin_user)
+    return client
