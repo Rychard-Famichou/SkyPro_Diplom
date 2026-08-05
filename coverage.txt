@@ -1,0 +1,45 @@
+============================= test session starts ==============================
+platform linux -- Python 3.12.13, pytest-9.1.1, pluggy-1.6.0
+django: version: 6.0.7, settings: config.settings (from ini)
+rootdir: /home/runner/work/SkyPro_Diplom/SkyPro_Diplom
+configfile: pytest.ini
+plugins: django-4.12.0, cov-7.1.0
+collected 56 items
+
+materials/tests.py ..........................................            [ 75%]
+users/tests.py ..............                                            [100%]
+
+=============================== warnings summary ===============================
+materials/tests.py::TestAdListApi::test_list[guest_api_client-0]
+  /home/runner/work/SkyPro_Diplom/SkyPro_Diplom/.venv/lib/python3.12/site-packages/drf_yasg/views.py:100: DeprecationWarning: SwaggerJSONRenderer & SwaggerYAMLRenderer's `format` has changed to not include a `.` prefix, please silence this warning by setting `SWAGGER_USE_COMPAT_RENDERERS = False` in your Django settings and ensure your application works (check your URLCONF and swagger/redoc URLs).
+    warnings.warn(
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+================================ tests coverage ================================
+_______________ coverage: platform linux, python 3.12.13-final-0 _______________
+
+Name                       Stmts   Miss  Cover   Missing
+--------------------------------------------------------
+config/urls.py                 7      0   100%
+conftest.py                   30      0   100%
+materials/apps.py              3      0   100%
+materials/conftest.py         10      0   100%
+materials/filters.py           7      0   100%
+materials/models.py           20      0   100%
+materials/paginators.py        3      0   100%
+materials/permissions.py       9      0   100%
+materials/serializers.py      12      0   100%
+materials/tests.py           102      0   100%
+materials/urls.py              4      0   100%
+materials/views.py            38      0   100%
+users/admin.py                10      0   100%
+users/apps.py                  3      0   100%
+users/conftest.py              7      1    86%   6
+users/models.py               62     17    73%   12, 22, 24, 42-50, 81-87
+users/tests.py                81      0   100%
+--------------------------------------------------------
+TOTAL                        408     18    96%
+
+7 empty files skipped.
+Required test coverage of 80.0% reached. Total coverage: 95.59%
+======================== 56 passed, 1 warning in 17.81s ========================
